@@ -8,12 +8,12 @@ java -version
 
 echo "======== Build ========"
 rm "$(dirname $0)/$(basename $0 .sh).lst" 2> /dev/null
-find src -type f -name *.java > "$(dirname $0)/$(basename $0 .sh).lst"
+dir /B /S src\*.java > "$(dirname $0)/$(basename $0 .sh).lst"
 type "$(dirname $0)/$(basename $0 .sh).lst"
 
 echo "== Compile =="
 javac -d bin @"$(dirname $0)/$(basename $0 .sh).lst"
 
 echo "== Result =="
-find bin -type f -name *.class
+dir /B /S bin\*.class
 

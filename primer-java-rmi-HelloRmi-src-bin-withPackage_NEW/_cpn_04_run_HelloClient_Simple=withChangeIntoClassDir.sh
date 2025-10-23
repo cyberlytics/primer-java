@@ -2,7 +2,7 @@
 
 cd "$(dirname $(readlink -f $0))"
 
-echo "classDir: `pwd`/bin"
+echo "classDir: `pwd`\bin"
 cd bin
 
 echo "Start HelloClient..."

@@ -13,7 +13,7 @@ eolConverter lf "**/*.sh" > /dev/null 2>&1
 
 echo "^> Zipping..."
 cd ..
-7z a -xr@"%BASEDIR%/%~n0.lst" "%BASEDIR%.zip" ./%BASEDIR%/*
-move "%BASEDIR%.zip" ./%BASEDIR%/ > /dev/null 2>&1
+7z a -xr@"%BASEDIR%\%~n0.lst" "%BASEDIR%.zip" .\%BASEDIR%\*
+move "%BASEDIR%.zip" .\%BASEDIR%\ > /dev/null 2>&1
 cd "$(dirname $(readlink -f $0))"
 
