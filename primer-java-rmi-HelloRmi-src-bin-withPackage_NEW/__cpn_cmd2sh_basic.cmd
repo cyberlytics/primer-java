@@ -31,8 +31,9 @@ if "%%~dpnxF"=="%~dpnx0" (
 	rem echo %%ID%% | sed -r -e "s:%%([^%%]+)%%:$\1:"
 
 	echo #^^!/bin/sh > "%%~dpnF.sh"
-	
-	cmd /D/C type "%%~dpnxF" | egrep -vi "echo off" | egrep -vi "setlocal" | egrep -vi "rem" | egrep -vi "pause" | sed -e "s/[Ss][Ee][Tt] \+//" | sed -e "s/setlocal .*//" | sed -e "s/del/rm/" | sed -e "s:[Nn][Uu][Ll]:/dev/null:" | sed -e "s:cd \+/[Dd]:cd:" | sed -e "s/%%~dp0/$(dirname $(readlink -f $0))/" | sed -e "s:%%~dpn0:$(dirname $0)/$(basename $0 .sh):g" | sed -e "s/[.][Ee][Xx][Ee]//" | sed -e "s:[Cc][Mm][Dd] /[Dd] */[Cc] \+::" | sed -e "s:\\\\:/:g" | sed -r -e "s:echo (.*):echo ""\1"":g" | sed -r -e "s:%%CD%%:`pwd`:g" | sed -r -e "s:dir /B /S ([^/]*)/(\*.\w+):find \1 -type f -name \2:g" 2> NUL >> "%%~dpnF.sh"
+
+	for %%i in (%CD%) do set BASEDIR=%%~ni
+	cmd /D/C type "%%~dpnxF" | egrep -vi "echo off" | egrep -vi "setlocal" | egrep -vi "rem" | egrep -vi "pause" | sed -e "s/for ..i in \(..CD..\) do set BASEDIR=..~ni/BASEDIR=$(basename `pwd`)/g" -e "s/[Ss][Ee][Tt] \+//" -e "s/setlocal .*//" -e "s/del/rm/" -e "s:[Nn][Uu][Ll]:/dev/null:" -e "s:cd \+/[Dd]:cd:" -e "s/\^>/>/g" -e "s/%%~dp0/$(dirname $(readlink -f $0))/" -e "s:%%~dpn0:$(dirname $0)/$(basename $0 .sh):g" -e "s/%%~n0/$(basename $0 .sh)/g" -e "s:\\%%BASEDIR%%\\:/$BASEDIR/:g" -e "s:\\%%BASEDIR%%:/$BASEDIR:g" -e "s:%%BASEDIR%%\\:$BASEDIR/:g" -e "s:%%BASEDIR%%:$BASEDIR:g" -e "s/[.][Ee][Xx][Ee]//g" -e "s/\.cmd/.sh/g" -e "s:[Cc][Mm][Dd] /[Dd] */[Cc] \+::" -e "s:\\\\:/:g" | sed -r -e "s:echo (.*):echo ""\1"":g" | sed -e "s:%%CD%%:`pwd`:g" | sed -r -e "s:dir\s*/B\s*/S\s+(\*\.\w+):find $(dirname $0) -type f -name '\1':g" | sed -r -e "s:dir\s*/B\s*/S\s+([^/\\]+)[/\\](\*\.\w+):find $(dirname $0)/\1 -type f -name '\2':g" 2> NUL >> "%%~dpnF.sh"
 	rem | sed -r -e "s:%%([^%%]+)%%:$\1:g"
 ))
 
